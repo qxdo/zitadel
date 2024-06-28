@@ -120,6 +120,10 @@ Database:
         Cert: "" # ZITADEL_DATABASE_COCKROACH_USER_SSL_CERT
         Key: "" # ZITADEL_DATABASE_COCKROACH_USER_SSL_KEY
     Admin:
+      # By default, ExistingDatabase is not specified in the connection string
+      # If the connection resolves to a database that is not existing in your system, configure an existing one here
+      # It is used in zitadel init to connect to cockroach and create a dedicated database for ZITADEL.
+      ExistingDatabase: # ZITADEL_DATABASE_COCKROACH_ADMIN_EXISTINGDATABASE
       Username: root # ZITADEL_DATABASE_COCKROACH_ADMIN_USERNAME
       Password: "" # ZITADEL_DATABASE_COCKROACH_ADMIN_PASSWORD
       SSL:
@@ -147,6 +151,10 @@ Database:
         Cert: # ZITADEL_DATABASE_POSTGRES_USER_SSL_CERT
         Key: # ZITADEL_DATABASE_POSTGRES_USER_SSL_KEY
     Admin:
+      # The default ExistingDatabase is postgres
+      # If your db system doesn't have a database named postgres, configure an existing database here
+      # It is used in zitadel init to connect to postgres and create a dedicated database for ZITADEL.
+      ExistingDatabase: # ZITADEL_DATABASE_POSTGRES_ADMIN_EXISTINGDATABASE
       Username: # ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME
       Password: # ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD
       SSL:
@@ -472,11 +480,12 @@ SystemDefaults:
     #
     # Supported verifiers: (uncomment to enable)
     Verifiers: # ZITADEL_SYSTEMDEFAULTS_PASSWORDHASHER_VERIFIERS
-    #   - "argon2" # verifier for both argon2i and argon2id.
+    #   - "argon2"   # verifier for both argon2i and argon2id.
     #   - "bcrypt"
-    #   - "md5"
+    #   - "md5"      # md5Crypt with salt and password shuffling.
+    #   - "md5plain" # md5 digest of a password without salt
     #   - "scrypt"
-    #   - "pbkdf2" # verifier for all pbkdf2 hash modes.
+    #   - "pbkdf2"   # verifier for all pbkdf2 hash modes.
   SecretHasher:
     # Set hasher configuration for machine users, API and OIDC client secrets.
     Hasher:
